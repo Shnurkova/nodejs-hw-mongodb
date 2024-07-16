@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 async function initMongoConnection() {
     try {
 
-        const DB_URI = "mongodb+srv://annshnur:jsvV5h8uH2KHM76b@cluster0.7yruouk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+        const DB_URI = process.env.DB_URI;
 
         // const user = env('MONGODB_USER');
         // const password = env('MONGODB_PASSWORD');
