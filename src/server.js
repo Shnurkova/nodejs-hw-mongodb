@@ -8,21 +8,17 @@ function setupServer() {
     app.use(pino());
     app.use(cors());
 
-    app.get("/", (req, res) => {
-        res.send([
-            {
-                id: 1,
-                title: 'Title 1',
-            },
-            {
-                id: 2,
-                title: 'Title 2',
-            },
-            {
-                id: 3,
-                title: 'Title 3',
-            },
-        ]);
+    app.use('*', (req, res, next) => {
+    res.status(404).json({
+      message: "Not found"
+    });
+    });
+
+    app.use((err, res, req, next) => {
+        res.status(500).json({
+            message: "Something went wrong",
+            error: err.message
+        });
     });
 
     app.listen(3000, () => {
