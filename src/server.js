@@ -2,11 +2,14 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 
+
 function setupServer() {
     const app = express();
 
     app.use(pino());
     app.use(cors());
+
+
 
     app.use('*', (req, res, next) => {
     res.status(404).json({
@@ -14,7 +17,7 @@ function setupServer() {
     });
     });
 
-    app.use((err, res, req, next) => {
+    app.use((err, req, res, next) => {
         res.status(500).json({
             message: "Something went wrong",
             error: err.message
