@@ -11,7 +11,7 @@ const contactSchema = new Schema({
     },
     email: {
         type: String,
-        default: null,
+        required: false,
 
     },
     isFavorite: {
@@ -25,7 +25,10 @@ const contactSchema = new Schema({
         default: "personal",
     }
 },
-    {timestamps: true}
+    {
+        timestamps: true,
+        versionKey: false,
+    }
 );
 
 const Contact = model("contact", contactSchema);

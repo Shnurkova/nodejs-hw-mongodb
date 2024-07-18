@@ -1,6 +1,7 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
+import router from "./routers/contacts.js";
 
 
 function setupServer() {
@@ -8,6 +9,7 @@ function setupServer() {
 
     app.use(pino());
     app.use(cors());
+    app.use("/contacts", router);
 
 
 
