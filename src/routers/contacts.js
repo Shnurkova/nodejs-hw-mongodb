@@ -3,6 +3,6 @@ import { getAllContacts } from "../controllers/contacts.js";
 
 const router = Router();
 
-router.get("/", );
+router.get("/", getAllContacts );
 
 export default router;
