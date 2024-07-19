@@ -1,14 +1,25 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
+import { env } from './utils/env.js';
 import router from "./routers/contacts.js";
 
+const PORT = Number(env('PORT', '3000'));
 
 function setupServer() {
     const app = express();
 
-    app.use(pino());
+    app.use(express.json());
     app.use(cors());
+    app.use(
+        pino(
+            {
+                transport: {
+                    target: 'pino-pretty',
+                }
+            }
+        )
+    );
     app.use("/contacts", router);
 
 
@@ -22,12 +33,12 @@ function setupServer() {
     app.use((err, req, res, next) => {
         res.status(500).json({
             message: "Something went wrong",
-            error: err.message
+            error: err.message,
         });
     });
 
-    app.listen(3000, () => {
-        console.log("Server is running on port 3000");
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
     });
 }
 
