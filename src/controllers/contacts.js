@@ -12,8 +12,7 @@ export const getAllContacts = async (req, res, next) => {
       data: contacts,
     });
   } catch (err) {
-    console.log(err);
-    throw err;
+    next(err);
   }
 };
 export const getContactById = async (req, res, next) => {
@@ -32,8 +31,7 @@ export const getContactById = async (req, res, next) => {
       data: contact,
     });
   } catch (err) {
-    console.log(err);
-    throw err;
+    next(err);
   }
 };
 
