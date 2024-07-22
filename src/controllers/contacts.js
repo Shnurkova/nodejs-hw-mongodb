@@ -39,4 +39,7 @@ export const getContactById = async (req, res, next) => {
   }
 };
 
+ export const createUser = async (req, res, next) => {
+   res.send("OK");
+ };
 
