@@ -39,7 +39,9 @@ export const getContactById = async (req, res, next) => {
   }
 };
 
- export const createUser = async (req, res, next) => {
-   res.send("OK");
+export const createUser = async (req, res, next) => {
+  console.log(req.body);
+
+  res.send("OK");
  };
 
