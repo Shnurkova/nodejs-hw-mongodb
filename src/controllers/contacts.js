@@ -49,10 +49,14 @@ export const createUser = async (req, res, next) => {
     contactType: req.body.contactType
   };
 
-  const result = await createContact(contact);
+  const createdContact = await createContact(contact);
 
-  console.log({ result });
-
-  res.send("OK");
+  res
+    .status(201)
+    .send({
+      status: 201,
+      message: "Successfully created a contact!",
+      data: createdContact,
+    });
  };
 
