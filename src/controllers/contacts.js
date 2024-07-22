@@ -2,6 +2,7 @@ import createHttpError from 'http-errors';
 import {
   getAllContactsService,
   getContactByIdService,
+  createContact,
 } from '../services/contacts.js';
 
 export const getAllContacts = async (req, res) => {
@@ -40,7 +41,17 @@ export const getContactById = async (req, res, next) => {
 };
 
 export const createUser = async (req, res, next) => {
-  console.log(req.body);
+  const contact = {
+    name: req.body.name,
+    phoneNumber: req.body.phoneNumber,
+    email: req.body.email,
+    isFavourite: req.body.isFavourite,
+    contactType: req.body.contactType
+  };
+
+  const result = await createContact(contact);
+
+  console.log({ result });
 
   res.send("OK");
  };
