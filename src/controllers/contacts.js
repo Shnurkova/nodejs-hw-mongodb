@@ -3,6 +3,7 @@ import {
   getAllContactsService,
   getContactByIdService,
   createContact,
+  deleteContact,
 } from '../services/contacts.js';
 
 export const getAllContacts = async (req, res) => {
@@ -58,5 +59,29 @@ export const createUser = async (req, res, next) => {
       message: "Successfully created a contact!",
       data: createdContact,
     });
- };
+};
 
+export const deleteUser = async (req, res, next) => {
+
+  const { contactId } = req.params;
+
+  const deletedContact = await deleteContact(contactId);
+
+  if (!deletedContact) {
+      return next(createHttpError(404, "Contact not found"));
+  }
+
+  res.status(204).end();
+};
+
+export const changeContactFavorite = async (req, res, next) => {
+  const { contactId } = req.params;
+
+  const favorite = req.body.favorite;
+
+  const changedContact = await changeContactFavorite(contactId, favorite);
+
+  console.log({changedContact});
+
+  res.send("Favorite");
+};
