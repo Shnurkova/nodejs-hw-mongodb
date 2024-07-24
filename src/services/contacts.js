@@ -14,6 +14,6 @@ export const deleteContact = async (contactId) => {
 };
 
 
-export const changeContactFavorite = async (contactId, favorite) => {
-  return Contact.findByIdAndUpdate(contactId, { favorite: favorite }), {new: true};
+export const changeContactFavoriteService = async (contactId, favorite) => {
+  return Contact.findByIdAndUpdate(contactId, { isFavorite: favorite }), {new: true};
 };

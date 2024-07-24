@@ -4,6 +4,7 @@ import {
   getContactByIdService,
   createContact,
   deleteContact,
+  changeContactFavoriteService
 } from '../services/contacts.js';
 
 export const getAllContacts = async (req, res) => {
@@ -76,12 +77,17 @@ export const deleteUser = async (req, res, next) => {
 
 export const changeContactFavorite = async (req, res, next) => {
   const { contactId } = req.params;
+  const { favorite } = req.body.favorite;
 
-  const favorite = req.body.favorite;
+  const updatedContact = await changeContactFavoriteService(contactId, favorite);
 
-  const changedContact = await changeContactFavorite(contactId, favorite);
+    if (!updatedContact) {
+      return next(createHttpError(404, "Contact not found"));
+    }
 
-  console.log({changedContact});
-
-  res.send("Favorite");
+    res.status(200).json({
+      status: 200,
+      message: "Successfully patched a contact!",
+      data: updatedContact,
+  });
 };
