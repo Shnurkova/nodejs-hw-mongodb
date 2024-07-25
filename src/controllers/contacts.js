@@ -77,9 +77,13 @@ export const deleteUser = async (req, res, next) => {
 
 export const changeContactFavorite = async (req, res, next) => {
   const { contactId } = req.params;
-  const { favorite } = req.body.favorite;
+  const { favorite } = req.body;
 
-  const updatedContact = await changeContactFavoriteService(contactId, favorite);
+
+  try {
+    console.log(`Received PATCH request to update favorite status for contactId: ${contactId}, favorite: ${favorite}`);
+
+    const updatedContact = await changeContactFavoriteService(contactId, favorite);
 
     if (!updatedContact) {
       return next(createHttpError(404, "Contact not found"));
@@ -90,4 +94,11 @@ export const changeContactFavorite = async (req, res, next) => {
       message: "Successfully patched a contact!",
       data: updatedContact,
   });
+  } catch (err) {
+    if (err.name === 'CastError' && err.kind === 'ObjectId') {
+      return next(createHttpError(400, 'Invalid contact ID'));
+    }
+    console.error('Error updating favorite status:', err);
+    next(err);
+  }
 };

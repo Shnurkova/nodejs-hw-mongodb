@@ -15,5 +15,14 @@ export const deleteContact = async (contactId) => {
 
 
 export const changeContactFavoriteService = async (contactId, favorite) => {
-  return Contact.findByIdAndUpdate(contactId, { isFavorite: favorite }), {new: true};
+
+  try {
+    console.log(`Updating favorite status for contactId: ${contactId} to ${favorite}`);
+
+    return await Contact.findByIdAndUpdate(contactId, { isFavorite: favorite }), {new: true, runValidators: true};
+
+  } catch (err) {
+    console.error('Error updating favorite status in service:', err);
+    throw err;
+  }
 };
