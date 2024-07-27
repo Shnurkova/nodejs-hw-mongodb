@@ -18,6 +18,6 @@ router.post("/", jsonParser, ctrlWrapper(createUser));
 
 router.delete("/:contactId", ctrlWrapper(deleteUser));
 
-router.patch("/:contactId/favorite", jsonParser, ctrlWrapper(changeContactFavorite));
+router.patch("/:contactId", jsonParser, ctrlWrapper(changeContactFavorite));
 
 export default router;

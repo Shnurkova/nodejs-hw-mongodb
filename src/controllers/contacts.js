@@ -77,7 +77,7 @@ export const deleteUser = async (req, res, next) => {
 
 export const changeContactFavorite = async (req, res, next) => {
   const { contactId } = req.params;
-  const { favorite } = req.body;
+  const favorite = req.body;
 
 
   try {
