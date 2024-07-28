@@ -6,6 +6,7 @@ import {
   deleteContact,
   changeContactFavoriteService
 } from '../services/contacts.js';
+import { contactSchema } from '../validation/contacts.js';
 
 export const getAllContacts = async (req, res) => {
 
@@ -50,6 +51,16 @@ export const createUser = async (req, res, next) => {
     isFavourite: req.body.isFavourite,
     contactType: req.body.contactType
   };
+
+  const validationResponse = contactSchema.validate(contact);
+
+  console.log(validationResponse);
+
+  if (typeof validationResponse.error !== "undefined") {
+    console.error(validationResponse.error);
+
+    return next(createHttpError(400, "Contact payload is not valid"));
+  }
 
   const createdContact = await createContact(contact);
 
