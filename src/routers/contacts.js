@@ -7,6 +7,8 @@ import {
     deleteUser,
     changeContactFavorite
 } from "../controllers/contacts.js";
+import { contactSchema } from "../validation/contacts.js";
+import { validateBody } from "../middlewares/validateBody.js";
 
 const router = express.Router();
 const jsonParser = express.json();

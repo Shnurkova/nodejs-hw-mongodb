@@ -52,17 +52,13 @@ export const createUser = async (req, res, next) => {
     contactType: req.body.contactType
   };
 
-  const validationResponse = contactSchema.validate(contact);
+  const {error, value} = contactSchema.validateAsync(contact);
 
-  console.log(validationResponse);
-
-  if (typeof validationResponse.error !== "undefined") {
-    console.error(validationResponse.error);
-
-    return next(createHttpError(400, "Contact payload is not valid"));
+  if (typeof error !== "undefined") {
+    return next(createHttpError(400, error.details[0].message));
   }
 
-  const createdContact = await createContact(contact);
+  const createdContact = await createContact(value);
 
   res
     .status(201)
