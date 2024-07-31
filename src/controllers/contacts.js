@@ -6,7 +6,6 @@ import {
   deleteContact,
   changeContactFavoriteService,
 } from '../services/contacts.js';
-import { contactSchema } from '../validation/contacts.js';
 
 export const getAllContacts = async (req, res) => {
   const contacts = await getAllContactsService();
@@ -18,10 +17,10 @@ export const getAllContacts = async (req, res) => {
   });
 };
 export const getContactById = async (req, res, next) => {
-  const { contactId } = req.params;
+  const { id } = req.params;
 
   try {
-    const contact = await getContactByIdService(contactId);
+    const contact = await getContactByIdService(id);
 
     if (!contact) {
       return next(createHttpError(404, 'Contact not found'));
@@ -59,9 +58,9 @@ export const createUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
-  const { contactId } = req.params;
+  const { id } = req.params;
 
-  const deletedContact = await deleteContact(contactId);
+  const deletedContact = await deleteContact(id);
 
   if (!deletedContact) {
     return next(createHttpError(404, 'Contact not found'));
@@ -71,18 +70,15 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const changeContactFavorite = async (req, res, next) => {
-  const { contactId } = req.params;
+  const { id } = req.params;
   const favorite = req.body;
 
   try {
     console.log(
-      `Received PATCH request to update favorite status for contactId: ${contactId}, favorite: ${favorite}`,
+      `Received PATCH request to update favorite status for contactId: ${id}, favorite: ${favorite}`,
     );
 
-    const updatedContact = await changeContactFavoriteService(
-      contactId,
-      favorite,
-    );
+    const updatedContact = await changeContactFavoriteService(id, favorite);
 
     if (!updatedContact) {
       return next(createHttpError(404, 'Contact not found'));
