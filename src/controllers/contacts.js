@@ -4,12 +4,11 @@ import {
   getContactByIdService,
   createContact,
   deleteContact,
-  changeContactFavoriteService
+  changeContactFavoriteService,
 } from '../services/contacts.js';
 import { contactSchema } from '../validation/contacts.js';
 
 export const getAllContacts = async (req, res) => {
-
   const contacts = await getAllContactsService();
 
   res.status(200).json({
@@ -19,15 +18,13 @@ export const getAllContacts = async (req, res) => {
   });
 };
 export const getContactById = async (req, res, next) => {
-
   const { contactId } = req.params;
 
   try {
-
     const contact = await getContactByIdService(contactId);
 
     if (!contact) {
-      return next(createHttpError(404, "Contact not found"));
+      return next(createHttpError(404, 'Contact not found'));
     }
 
     res.status(200).json({
@@ -49,34 +46,25 @@ export const createUser = async (req, res, next) => {
     phoneNumber: req.body.phoneNumber,
     email: req.body.email,
     isFavourite: req.body.isFavourite,
-    contactType: req.body.contactType
+    contactType: req.body.contactType,
   };
 
-  const {error, value} = contactSchema.validateAsync(contact);
+  const createdContact = await createContact(contact);
 
-  if (typeof error !== "undefined") {
-    return next(createHttpError(400, error.details[0].message));
-  }
-
-  const createdContact = await createContact(value);
-
-  res
-    .status(201)
-    .send({
-      status: 201,
-      message: "Successfully created a contact!",
-      data: createdContact,
-    });
+  res.status(201).send({
+    status: 201,
+    message: 'Successfully created a contact!',
+    data: createdContact,
+  });
 };
 
 export const deleteUser = async (req, res, next) => {
-
   const { contactId } = req.params;
 
   const deletedContact = await deleteContact(contactId);
 
   if (!deletedContact) {
-      return next(createHttpError(404, "Contact not found"));
+    return next(createHttpError(404, 'Contact not found'));
   }
 
   res.status(204).end();
@@ -86,21 +74,25 @@ export const changeContactFavorite = async (req, res, next) => {
   const { contactId } = req.params;
   const favorite = req.body;
 
-
   try {
-    console.log(`Received PATCH request to update favorite status for contactId: ${contactId}, favorite: ${favorite}`);
+    console.log(
+      `Received PATCH request to update favorite status for contactId: ${contactId}, favorite: ${favorite}`,
+    );
 
-    const updatedContact = await changeContactFavoriteService(contactId, favorite);
+    const updatedContact = await changeContactFavoriteService(
+      contactId,
+      favorite,
+    );
 
     if (!updatedContact) {
-      return next(createHttpError(404, "Contact not found"));
+      return next(createHttpError(404, 'Contact not found'));
     }
 
     res.status(200).json({
       status: 200,
-      message: "Successfully patched a contact!",
+      message: 'Successfully patched a contact!',
       data: updatedContact,
-  });
+    });
   } catch (err) {
     if (err.name === 'CastError' && err.kind === 'ObjectId') {
       return next(createHttpError(400, 'Invalid contact ID'));
