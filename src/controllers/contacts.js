@@ -17,10 +17,10 @@ export const getAllContacts = async (req, res) => {
   });
 };
 export const getContactById = async (req, res, next) => {
-  const { id } = req.params;
+  const { contactId } = req.params;
 
   try {
-    const contact = await getContactByIdService(id);
+    const contact = await getContactByIdService(contactId);
 
     if (!contact) {
       return next(createHttpError(404, 'Contact not found'));
@@ -58,9 +58,9 @@ export const createUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
-  const { id } = req.params;
+  const { contactId } = req.params;
 
-  const deletedContact = await deleteContact(id);
+  const deletedContact = await deleteContact(contactId);
 
   if (!deletedContact) {
     return next(createHttpError(404, 'Contact not found'));
@@ -70,15 +70,18 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const changeContactFavorite = async (req, res, next) => {
-  const { id } = req.params;
+  const { contactId } = req.params;
   const favorite = req.body;
 
   try {
     console.log(
-      `Received PATCH request to update favorite status for contactId: ${id}, favorite: ${favorite}`,
+      `Received PATCH request to update favorite status for contactId: ${contactId}, favorite: ${favorite}`,
     );
 
-    const updatedContact = await changeContactFavoriteService(id, favorite);
+    const updatedContact = await changeContactFavoriteService(
+      contactId,
+      favorite,
+    );
 
     if (!updatedContact) {
       return next(createHttpError(404, 'Contact not found'));
