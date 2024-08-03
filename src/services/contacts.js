@@ -1,11 +1,20 @@
 import Contact from '../db/Contact.js';
 
-export const getAllContactsService = async ({ page, perPage }) => {
+export const getAllContactsService = async ({
+  page,
+  perPage,
+  sortBy,
+  sortOrder,
+}) => {
   const limit = perPage;
   const skip = page > 0 ? (page - 1) * perPage : 0;
 
   const [contacts, count] = await Promise.all([
-    Contact.find().skip(skip).limit(limit).exec(),
+    Contact.find()
+      .sort({ [sortBy]: sortOrder })
+      .skip(skip)
+      .limit(limit)
+      .exec(),
     Contact.countDocuments(),
   ]);
 
