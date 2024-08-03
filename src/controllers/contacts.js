@@ -7,8 +7,15 @@ import {
   changeContactFavoriteService,
 } from '../services/contacts.js';
 
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+
 export const getAllContacts = async (req, res) => {
-  const contacts = await getAllContactsService();
+  const { page, perPage } = parsePaginationParams(req.query);
+
+  const contacts = await getAllContactsService({
+    page,
+    perPage,
+  });
 
   res.status(200).json({
     status: 200,
