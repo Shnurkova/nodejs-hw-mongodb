@@ -1,10 +1,25 @@
 import Contact from '../db/Contact.js';
 
-export const getAllContactsService = ({ page, perPage }) => {
+export const getAllContactsService = async ({ page, perPage }) => {
   const limit = perPage;
   const skip = page > 0 ? (page - 1) * perPage : 0;
 
-  return Contact.find().skip(skip).limit(limit).exec();
+  const [contacts, count] = await Promise.all([
+    Contact.find().skip(skip).limit(limit).exec(),
+    Contact.countDocuments(),
+  ]);
+
+  const totalPages = Math.ceil(count / perPage);
+
+  return {
+    contacts,
+    page,
+    perPage,
+    totalItems: count,
+    totalPages,
+    hasNextPage: totalPages - page > 0,
+    hasPreviousPage: page > 1,
+  };
 };
 export const getContactByIdService = (contactId) => Contact.findById(contactId);
 
