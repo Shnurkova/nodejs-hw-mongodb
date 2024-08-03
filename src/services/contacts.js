@@ -11,9 +11,9 @@ export const getAllContactsService = async ({
 
   const [contacts, count] = await Promise.all([
     Contact.find()
-      .sort({ [sortBy]: sortOrder })
       .skip(skip)
       .limit(limit)
+      .sort({ [sortBy]: sortOrder })
       .exec(),
     Contact.countDocuments(),
   ]);
