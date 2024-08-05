@@ -19,7 +19,9 @@ async function register(req, res) {
 async function login(req, res) {
   const { email, password } = req.body;
 
-  await loginUser(email, password);
+  const session = await loginUser(email, password);
+
+  console.log({ session });
 
   // res.status(201).send({
   //   status: 201,
