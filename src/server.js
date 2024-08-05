@@ -6,6 +6,7 @@ import routerAuth from './routers/auth.js';
 import router from './routers/contacts.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import cookieParser from 'cookie-parser';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -21,6 +22,7 @@ function setupServer() {
       },
     }),
   );
+  app.use(cookieParser());
   app.use(routerAuth);
   app.use('/contacts', router);
 

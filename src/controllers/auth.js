@@ -23,12 +23,23 @@ async function login(req, res) {
 
   console.log({ session });
 
-  // res.status(201).send({
-  //   status: 201,
-  //   message: 'Successfully registered a user!',
-  //   data: registeredUser,
-  // });
-  res.send('Login oh yes');
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: session.refreshTokenValidUntil,
+  });
+
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: session.refreshTokenValidUntil,
+  });
+
+  res.status(200).send({
+    status: 200,
+    message: 'Successfully logged in an user!',
+    data: {
+      accessToken: session.accessToken,
+    },
+  });
 }
 
 export { register, login };
