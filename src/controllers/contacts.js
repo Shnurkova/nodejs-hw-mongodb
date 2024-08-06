@@ -19,6 +19,7 @@ export const getAllContacts = async (req, res) => {
     perPage,
     sortBy,
     sortOrder,
+    userId: req.user._id,
   });
 
   res.status(200).json({
@@ -50,13 +51,14 @@ export const getContactById = async (req, res, next) => {
   }
 };
 
-export const createUser = async (req, res, next) => {
+export const createUser = async (req, res) => {
   const contact = {
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
     email: req.body.email,
     isFavourite: req.body.isFavourite,
     contactType: req.body.contactType,
+    userId: req.user._id,
   };
 
   const createdContact = await createContact(contact);

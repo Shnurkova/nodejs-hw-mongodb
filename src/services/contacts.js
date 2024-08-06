@@ -5,9 +5,14 @@ export const getAllContactsService = async ({
   perPage,
   sortBy,
   sortOrder,
+  userId,
 }) => {
   const limit = perPage;
   const skip = page > 0 ? (page - 1) * perPage : 0;
+
+  const contactQuery = Contact.find();
+
+  contactQuery.where('userID').equals(userId);
 
   const [contacts, count] = await Promise.all([
     Contact.find()
