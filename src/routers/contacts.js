@@ -10,24 +10,27 @@ import {
 import { contactSchema, updateContactSchema } from '../validation/contacts.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { auth } from '../middlewares/authenticate.js';
 
 const router = express.Router();
 const jsonParser = express.json();
 
-router.get('/', ctrlWrapper(getAllContacts));
-router.get('/:contactId', isValidId, ctrlWrapper(getContactById));
+router.get('/', auth, ctrlWrapper(getAllContacts));
+router.get('/:contactId', auth, isValidId, ctrlWrapper(getContactById));
 
 router.post(
   '/',
+  auth,
   jsonParser,
   validateBody(contactSchema),
   ctrlWrapper(createUser),
 );
 
-router.delete('/:contactId', isValidId, ctrlWrapper(deleteUser));
+router.delete('/:contactId', auth, isValidId, ctrlWrapper(deleteUser));
 
 router.patch(
   '/:contactId',
+  auth,
   isValidId,
   jsonParser,
   validateBody(updateContactSchema),
