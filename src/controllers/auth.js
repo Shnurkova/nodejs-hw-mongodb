@@ -1,4 +1,4 @@
-import { registerUser, loginUser } from '../services/auth.js';
+import { registerUser, loginUser, logoutUser } from '../services/auth.js';
 
 async function register(req, res) {
   const user = {
@@ -42,4 +42,23 @@ async function login(req, res) {
   });
 }
 
-export { register, login };
+async function logout(req, res, next) {
+  if (typeof req.cookies.sessionId === 'string') {
+    await logoutUser(req.cookies.sessionId);
+  }
+
+  res.clearCookie('refreshToken');
+  res.clearCookie('sessionId');
+
+  res.status(204).end();
+}
+
+async function refresh(req, res) {
+  if (typeof req.cookies.sessionId === 'string') {
+    await logoutUser(req.cookies.sessionId);
+  }
+
+  res.send('Refresh');
+}
+
+export { register, login, logout, refresh };

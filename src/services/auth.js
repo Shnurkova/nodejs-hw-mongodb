@@ -43,3 +43,19 @@ export const loginUser = async (email, password) => {
     refreshTokenValidUntil: new Date(Date.now() + REFRESH_TOKEN_TTL),
   });
 };
+
+export const logoutUser = async (sessionId) => {
+  await Session.deleteOne({ _id: sessionId });
+};
+
+export const refreshUserSession = async (sessionId, refreshToken) => {
+  const session = await Session.findOne({ _id: sessionId, refreshToken });
+
+  if (session === null) {
+    throw createHttpError(401, 'Session not found');
+  }
+
+  if (new Date() > new Date(session.refreshTokenValidUntil)) {
+    throw createHttpError(401, 'Session token expired');
+  }
+};
