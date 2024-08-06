@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import User from '../db/User.js';
 import createHttpError from 'http-errors';
-import Session from '../db/session.js';
+import Session from '../db/Session.js';
 import { ACCESS_TOKEN_TTL, REFRESH_TOKEN_TTL } from '../constants/index.js';
 
 export const registerUser = async (user) => {
