@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors';
-import Session from '../db/session.js';
+import Session from '../db/Sedc.js';
 import User from '../db/User.js';
 
 export async function auth(req, res, next) {
