@@ -56,6 +56,16 @@ export const refreshUserSession = async (sessionId, refreshToken) => {
   }
 
   if (new Date() > new Date(session.refreshTokenValidUntil)) {
-    throw createHttpError(401, 'Session token expired');
+    throw createHttpError(401, 'Refresh token token expired');
   }
+
+  await Session.deleteOne({ _id: session._id });
+
+  return Session.create({
+    userId: session.userId,
+    accessToken: crypto.randomBytes(30).toString('base64'),
+    refreshToken: crypto.randomBytes(30).toString('base64'),
+    accessTokenValidUntil: new Date(Date.now() + ACCESS_TOKEN_TTL),
+    refreshTokenValidUntil: new Date(Date.now() + REFRESH_TOKEN_TTL),
+  });
 };
