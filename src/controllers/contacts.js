@@ -32,7 +32,7 @@ export const getContactById = async (req, res, next) => {
   const { contactId } = req.params;
 
   try {
-    const contact = await getContactByIdService(contactId);
+    const contact = await getContactByIdService(contactId, req.user._id);
 
     if (!contact) {
       return next(createHttpError(404, 'Contact not found'));
@@ -73,7 +73,7 @@ export const createUser = async (req, res) => {
 export const deleteUser = async (req, res, next) => {
   const { contactId } = req.params;
 
-  const deletedContact = await deleteContact(contactId);
+  const deletedContact = await deleteContact(contactId, req.user._id);
 
   if (!deletedContact) {
     return next(createHttpError(404, 'Contact not found'));
@@ -93,6 +93,7 @@ export const changeContactFavorite = async (req, res, next) => {
 
     const updatedContact = await changeContactFavoriteService(
       contactId,
+      req.user._id,
       favorite,
     );
 

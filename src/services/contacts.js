@@ -10,17 +10,17 @@ export const getAllContactsService = async ({
   const limit = perPage;
   const skip = page > 0 ? (page - 1) * perPage : 0;
 
-  const contactQuery = Contact.find();
+  const contactQuery = Contact.find({ userId });
 
-  contactQuery.where('userID').equals(userId);
+  // contactQuery.where('userID').equals(userId);
 
   const [contacts, count] = await Promise.all([
-    Contact.find()
+    contactQuery
       .sort({ [sortBy]: sortOrder })
       .skip(skip)
       .limit(limit)
       .exec(),
-    Contact.countDocuments(),
+    Contact.countDocuments({ userId }),
   ]);
 
   const totalPages = Math.ceil(count / perPage);
@@ -35,22 +35,31 @@ export const getAllContactsService = async ({
     hasPreviousPage: page > 1,
   };
 };
-export const getContactByIdService = (contactId) => Contact.findById(contactId);
-
+export const getContactByIdService = (contactId, userId) => {
+  return Contact.findById({ _id: contactId, userId });
+};
 export const createContact = async (contact) => {
   return Contact.create(contact);
 };
 
-export const deleteContact = async (contactId) => {
-  return Contact.findByIdAndDelete(contactId);
+export const deleteContact = async (contactId, userId) => {
+  return Contact.findByIdAndDelete({ _id: contactId, userId });
 };
 
-export const changeContactFavoriteService = async (contactId, favorite) => {
+export const changeContactFavoriteService = async (
+  contactId,
+  userId,
+  favorite,
+) => {
   try {
-    return await Contact.findByIdAndUpdate(contactId, favorite, {
-      new: true,
-      runValidators: true,
-    });
+    return await Contact.findByIdAndUpdate(
+      { isFavorite: favorite },
+      { _id: contactId, userId },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
   } catch (err) {
     console.error('Error updating favorite status in service:', err);
     throw err;
