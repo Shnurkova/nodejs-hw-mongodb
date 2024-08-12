@@ -36,25 +36,25 @@ export const getAllContactsService = async ({
   };
 };
 export const getContactByIdService = (contactId, userId) => {
-  return Contact.findById({ _id: contactId, userId });
+  return Contact.findOne({ _id: contactId, userId });
 };
 export const createContact = async (contact) => {
   return Contact.create(contact);
 };
 
 export const deleteContact = async (contactId, userId) => {
-  return Contact.findByIdAndDelete({ _id: contactId, userId });
+  return Contact.findOneAndDelete({ _id: contactId, userId });
 };
 
 export const changeContactFavoriteService = async (
   contactId,
   userId,
-  favorite,
+  updatedData,
 ) => {
   try {
-    return await Contact.findByIdAndUpdate(
-      { isFavorite: favorite },
+    return await Contact.findOneAndUpdate(
       { _id: contactId, userId },
+      updatedData,
       {
         new: true,
         runValidators: true,
