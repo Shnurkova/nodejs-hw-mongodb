@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import User from '../db/User.js';
 import createHttpError from 'http-errors';
 import Session from '../db/session.js';
+import { sendMail } from '../utils/sendMail.js';
 import { ACCESS_TOKEN_TTL, REFRESH_TOKEN_TTL } from '../constants/index.js';
 
 export const registerUser = async (user) => {
@@ -76,4 +77,11 @@ export const requestResetEmail = async (email) => {
   if (maybeUser === null) {
     throw createHttpError(404, 'User not found');
   }
+
+  await sendMail({
+    from: 'Annshnur@gmail.com',
+    to: email,
+    subject: 'Reset your password',
+    html: 'To reset password click <a http="https://www.google.com">here</a>',
+  });
 };
