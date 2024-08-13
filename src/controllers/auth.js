@@ -84,11 +84,8 @@ async function refresh(req, res) {
   });
 }
 
-async function sendResetEmail(req, res, nest) {
-  const resetEmail = await requestResetEmail(req.body.email);
-
-  console.log({ resetEmail });
-
+async function sendResetEmail(req, res, next) {
+  await requestResetEmail(req.body.email);
   res.send('Reset password');
 }
 
