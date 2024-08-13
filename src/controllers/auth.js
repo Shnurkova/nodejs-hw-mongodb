@@ -86,7 +86,11 @@ async function refresh(req, res) {
 
 async function sendResetEmail(req, res, next) {
   await requestResetEmail(req.body.email);
-  res.send('Reset password');
+  res.send({
+    status: 200,
+    message: 'Reset password email has been successfully sent.',
+    data: {},
+  });
 }
 
 export { register, login, logout, refresh, sendResetEmail };
