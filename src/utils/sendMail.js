@@ -1,12 +1,14 @@
 import nodemailer from 'nodemailer';
 
+import { SMTP } from '../constants/index.js';
+
 const transport = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
+  host: SMTP.SMTP_HOST,
+  port: SMTP.SMTP_PORT,
   secure: false,
   auth: {
-    user: '7a4fd0001@smtp-brevo.com',
-    pass: '27z4bWwJ5CQTy0q1',
+    user: SMTP.SMTP_USER,
+    pass: SMTP.SMTP_PASSWORD,
   },
 });
 

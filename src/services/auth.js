@@ -4,7 +4,11 @@ import User from '../db/User.js';
 import createHttpError from 'http-errors';
 import Session from '../db/session.js';
 import { sendMail } from '../utils/sendMail.js';
-import { ACCESS_TOKEN_TTL, REFRESH_TOKEN_TTL } from '../constants/index.js';
+import {
+  ACCESS_TOKEN_TTL,
+  REFRESH_TOKEN_TTL,
+  SMTP,
+} from '../constants/index.js';
 
 export const registerUser = async (user) => {
   const maybeUser = await User.findOne({ email: user.email });
@@ -79,9 +83,9 @@ export const requestResetEmail = async (email) => {
   }
 
   await sendMail({
-    from: 'Annshnur@gmail.com',
+    from: SMTP.SMTP_FROM,
     to: email,
     subject: 'Reset your password',
-    html: 'To reset password click <a http="https://www.google.com">here</a>',
+    html: 'To reset password click <a href="https://www.google.com">here</a>',
   });
 };
