@@ -91,16 +91,14 @@ export const requestResetEmail = async (email) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: '15m',
+      expiresIn: '45m',
     },
   );
-
-  console.log({ resetToken });
 
   await sendMail({
     from: SMTP.SMTP_FROM,
     to: email,
     subject: 'Reset your password',
-    html: 'To reset password click <a href="https://www.google.com">here</a>',
+    html: `To reset password click <a href=${resetToken}>here</a>`,
   });
 };
