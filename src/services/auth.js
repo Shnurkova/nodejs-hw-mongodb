@@ -1,4 +1,6 @@
 import crypto from 'node:crypto';
+
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../db/User.js';
 import createHttpError from 'http-errors';
@@ -81,6 +83,19 @@ export const requestResetEmail = async (email) => {
   if (maybeUser === null) {
     throw createHttpError(404, 'User not found');
   }
+
+  const resetToken = jwt.sign(
+    {
+      sub: maybeUser._id,
+      email: maybeUser.email,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: '15m',
+    },
+  );
+
+  console.log({ resetToken });
 
   await sendMail({
     from: SMTP.SMTP_FROM,
