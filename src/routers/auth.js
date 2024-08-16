@@ -6,12 +6,14 @@ import {
   logout,
   refresh,
   sendResetEmail,
+  resetPassword,
 } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import {
   registerSchema,
   loginSchema,
   sendResetEmailSchema,
+  resetPasswordSchema,
 } from '../validation/auth.js';
 
 const routerAuth = express.Router();
@@ -40,6 +42,13 @@ routerAuth.post(
   jsonParser,
   validateBody(sendResetEmailSchema),
   ctrlWrapper(sendResetEmail),
+);
+
+routerAuth.post(
+  '/auth/reset-pwd',
+  jsonParser,
+  validateBody(resetPasswordSchema),
+  ctrlWrapper(resetPassword),
 );
 
 export default routerAuth;

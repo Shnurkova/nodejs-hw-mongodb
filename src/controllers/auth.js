@@ -93,4 +93,12 @@ async function sendResetEmail(req, res, next) {
   });
 }
 
+async function resetPassword(req, res, next) {
+  const { email, token } = req.body;
+
+  await resetPassword(email, token);
+
+  res.send('ok');
+}
+
 export { register, login, logout, refresh, sendResetEmail };
