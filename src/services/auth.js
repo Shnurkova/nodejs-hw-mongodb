@@ -1,7 +1,9 @@
+import * as fs from 'node:fs';
+import path from 'node:path';
 import crypto from 'node:crypto';
-
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import handlebars from 'handlebars';
 import User from '../db/User.js';
 import createHttpError from 'http-errors';
 import Session from '../db/session.js';
@@ -10,6 +12,7 @@ import {
   ACCESS_TOKEN_TTL,
   REFRESH_TOKEN_TTL,
   SMTP,
+  TEMPLATE_DIR,
 } from '../constants/index.js';
 
 export const registerUser = async (user) => {
@@ -94,6 +97,10 @@ export const requestResetEmail = async (email) => {
       expiresIn: '15m',
     },
   );
+
+  const templateFile = path.join(TEMPLATE_DIR, 'reset-psw-email.html');
+
+  const templateCourse = await fs.readFile(templateFile, { encoding: 'utf-8' });
 
   await sendMail({
     from: SMTP.SMTP_FROM,
