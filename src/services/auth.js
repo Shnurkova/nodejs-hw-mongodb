@@ -91,7 +91,7 @@ export const requestResetEmail = async (email) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: '45m',
+      expiresIn: '15m',
     },
   );
 
