@@ -1,7 +1,8 @@
-import * as fs from 'node:fs';
+import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
+import { env } from '../utils/env.js';
 import bcrypt from 'bcrypt';
 import handlebars from 'handlebars';
 import User from '../db/User.js';
@@ -102,10 +103,17 @@ export const requestResetEmail = async (email) => {
 
   const templateCourse = await fs.readFile(templateFile, { encoding: 'utf-8' });
 
+  const template = handlebars.compile(templateCourse);
+
+  const html = template({
+    user: maybeUser.name,
+    link: `${env('APP_DOMAIN')}/reset-password?token=${resetToken}`,
+  });
+
   await sendMail({
     from: SMTP.SMTP_FROM,
     to: email,
     subject: 'Reset your password',
-    html: `To reset password click <a href=${resetToken}>here</a>`,
+    html,
   });
 };
