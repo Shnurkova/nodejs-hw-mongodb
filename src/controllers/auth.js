@@ -101,4 +101,4 @@ async function resetPassword(req, res, next) {
   res.send('ok');
 }
 
-export { register, login, logout, refresh, sendResetEmail };
+export { register, login, logout, refresh, sendResetEmail, resetPassword };

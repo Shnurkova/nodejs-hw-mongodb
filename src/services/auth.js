@@ -117,3 +117,13 @@ export const requestResetEmail = async (email) => {
     html,
   });
 };
+
+export const resetPassword = async (email, token) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      throw err;
+    }
+
+    console.log(decoded);
+  });
+};
