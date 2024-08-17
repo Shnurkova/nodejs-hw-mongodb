@@ -94,13 +94,13 @@ async function sendResetEmail(req, res) {
   });
 }
 
-async function resetPassword(req, res, next) {
-  const { email, token } = req.body;
+async function resetPassword(req, res) {
+  const { password, token } = req.body;
 
-  console.log('Received reset password request for email:', email);
+  console.log('Received reset password request for email:', password);
   console.log('Received token for reset password:', token);
 
-  await sendResetPassword(email, token);
+  await sendResetPassword(password, token);
 
   res.send({
     status: 200,
