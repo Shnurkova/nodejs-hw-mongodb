@@ -1,4 +1,5 @@
 import createHttpError from 'http-errors';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 import {
   getAllContactsService,
   getContactByIdService,
@@ -52,6 +53,12 @@ export const getContactById = async (req, res, next) => {
 };
 
 export const createUser = async (req, res) => {
+  let photoUrl = '';
+
+  if (req.file) {
+    photoUrl = await saveFileToCloudinary(req.file);
+  }
+
   const contact = {
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
@@ -59,6 +66,7 @@ export const createUser = async (req, res) => {
     isFavourite: req.body.isFavourite,
     contactType: req.body.contactType,
     userId: req.user._id,
+    photo: photoUrl,
   };
 
   const createdContact = await createContact(contact);

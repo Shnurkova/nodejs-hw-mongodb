@@ -11,6 +11,7 @@ import { contactSchema, updateContactSchema } from '../validation/contacts.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { auth } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
 
 const router = express.Router();
 const jsonParser = express.json();
@@ -22,6 +23,7 @@ router.post(
   '/',
   auth,
   jsonParser,
+  upload.single('photo'),
   validateBody(contactSchema),
   ctrlWrapper(createUser),
 );
@@ -31,6 +33,7 @@ router.delete('/:contactId', auth, isValidId, ctrlWrapper(deleteUser));
 router.patch(
   '/:contactId',
   auth,
+  upload.single('photo'),
   isValidId,
   jsonParser,
   validateBody(updateContactSchema),
