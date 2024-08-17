@@ -118,12 +118,21 @@ export const requestResetEmail = async (email) => {
   });
 };
 
-export const resetPassword = async (email, token) => {
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+export const sendResetPassword = async (password, token) => {
+  return jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
     if (err) {
       throw err;
     }
-
     console.log(decoded);
+
+    const user = await User.findOne({ _id: decoded.sub, email: decoded.email });
+
+    if (user === null) {
+      throw createHttpError(404, 'User not found');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await User.findByIdAndUpdate(user._id, { password: hashedPassword });
   });
 };

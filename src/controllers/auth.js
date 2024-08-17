@@ -4,6 +4,7 @@ import {
   logoutUser,
   refreshUserSession,
   requestResetEmail,
+  sendResetPassword,
 } from '../services/auth.js';
 
 async function register(req, res) {
@@ -84,7 +85,7 @@ async function refresh(req, res) {
   });
 }
 
-async function sendResetEmail(req, res, next) {
+async function sendResetEmail(req, res) {
   await requestResetEmail(req.body.email);
   res.send({
     status: 200,
@@ -96,9 +97,16 @@ async function sendResetEmail(req, res, next) {
 async function resetPassword(req, res, next) {
   const { email, token } = req.body;
 
-  await resetPassword(email, token);
+  console.log('Received reset password request for email:', email);
+  console.log('Received token for reset password:', token);
 
-  res.send('ok');
+  await sendResetPassword(email, token);
+
+  res.send({
+    status: 200,
+    message: 'Password has been successfully reset.',
+    data: {},
+  });
 }
 
 export { register, login, logout, refresh, sendResetEmail, resetPassword };
