@@ -16,6 +16,8 @@ servers:
   - url: https://example.com/api/v1
 paths:
   /contacts/{id}:
+    get:
+      $ref: ../swagger/paths/contacts/{id}/get.yaml
 components:
   securitySchemes:
     bearerAuth:

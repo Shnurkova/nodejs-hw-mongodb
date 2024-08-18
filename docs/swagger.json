@@ -27,11 +27,156 @@
       "description": "Auth operations."
     }
   ],
+  "paths": {
+    "/contacts/{id}": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Get contact by id",
+        "operationId": "getContact",
+        "description": "Get contact by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "669bdf6591c11e76039e6ef3"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get contact by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found a contact with id 669bdf6591c11e76039e6ef3"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/contact"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contact not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Contact not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "components": {
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "contact": {
+        "type": "object",
+        "required": [
+          "_id",
+          "name",
+          "phoneNumber",
+          "email",
+          "isFavorite",
+          "contactType",
+          "userId",
+          "photo"
+        ],
+        "properties": {
+          "_id": {
+            "description": "Contact's id",
+            "type": "string",
+            "example": "669bdf6591c11e76039e6ef3"
+          },
+          "name": {
+            "description": "Contact's name",
+            "type": "string",
+            "example": "Anna Kovalenko"
+          },
+          "phoneNumber": {
+            "description": "Contact's number",
+            "type": "string",
+            "example": "+380000000006"
+          },
+          "email": {
+            "description": "Contact's email",
+            "type": "string",
+            "example": "anna.kovalenko@gmail.com"
+          },
+          "isFavorite": {
+            "description": "Whether the contact is marked as favorite",
+            "type": "boolean",
+            "example": true
+          },
+          "contactType": {
+            "description": "The type of contact",
+            "type": "string",
+            "enum": [
+              "work",
+              "home",
+              "personal"
+            ],
+            "example": "work"
+          },
+          "userId": {
+            "description": "The ID of the user who owns the contact",
+            "type": "string",
+            "example": "60d0fe4f5311236168a109ca"
+          },
+          "photo": {
+            "description": "URL of the contact's photo",
+            "type": "string",
+            "example": "https://res.cloudinary.com/djhmrxbxk/image/upload/v1723971950/kjrloagfnul67c1hvyzo.jpg"
+          }
+        }
       }
     }
   }
