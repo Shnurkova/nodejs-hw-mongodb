@@ -18,7 +18,7 @@ paths:
   /contacts/{id}:
     get:
       $ref: ../swagger/paths/contacts/{id}/get.yaml
-  /contacts
+  /contacts:
     post:
       $ref: ../swagger/paths/contacts/post.yaml
 components:
