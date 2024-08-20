@@ -159,7 +159,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "required": [
@@ -197,6 +197,11 @@
                       "personal"
                     ],
                     "example": "work"
+                  },
+                  "photo": {
+                    "description": "Contact photo",
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
