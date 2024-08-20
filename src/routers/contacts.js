@@ -22,8 +22,8 @@ router.get('/:contactId', auth, isValidId, ctrlWrapper(getContactById));
 router.post(
   '/',
   auth,
-  jsonParser,
   upload.single('photo'),
+  jsonParser,
   validateBody(contactSchema),
   ctrlWrapper(createUser),
 );

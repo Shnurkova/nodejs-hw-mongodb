@@ -183,7 +183,7 @@
                     "type": "string",
                     "example": "anna.kovalenko@gmail.com"
                   },
-                  "isFavorite": {
+                  "isFavourite": {
                     "description": "Whether the contact is marked as favorite",
                     "type": "boolean",
                     "example": true
