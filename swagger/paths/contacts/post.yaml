@@ -36,6 +36,10 @@ requestBody:
             type: string
             enum: ['work', 'home', 'personal']
             example: 'work'
+          photo:
+            type: string
+            format: binary
+            description: 'Contact photo'
 responses:
   '200':
     description: 'Create a contact'
