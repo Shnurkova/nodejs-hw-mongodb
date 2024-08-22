@@ -91,9 +91,15 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const changeContactFavorite = async (req, res, next) => {
+  let photoUrl = '';
+  if (req.file) {
+    photoUrl = await saveFileToCloudinary(req.file);
+  }
   const { contactId } = req.params;
-  const updatedData = req.body;
-
+  const updatedData = {
+    ...req.body,
+    ...(photoUrl && { photo: photoUrl }),
+  };
   try {
     const updatedContact = await changeContactFavoriteService(
       contactId,
