@@ -1,0 +1,110 @@
+tags:
+  - Contacts
+summary: Update contact by id
+operationId: updateContact
+description: 'Update an existing contact for the authenticated user'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: 669bdf6591c11e76039e6ef3
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            description: 'Name of the contact'
+            example: 'John Doe'
+          phoneNumber:
+            type: string
+            description: 'Phone number of the contact'
+            example: '+380000000001'
+          email:
+            type: string
+            description: 'Email of the contact'
+            example: 'john.doe@example.com'
+          contactType:
+            type: string
+            description: 'Type of contact (work, home, personal)'
+            example: 'personal'
+          photo:
+            type: string
+            format: binary
+            description: 'Photo of the contact'
+responses:
+  '200':
+    description: 'Contact updated successfully'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: 'Successfully updated the contact'
+            data:
+              type: object
+              $ref: ../../../components/schemas/contact.yaml
+  '400':
+    description: 'Bad request'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: 'Validation error'
+  '401':
+    description: Unauthorized
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: 'Please provide Authorization header'
+  '404':
+    description: 'Contact not found'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: 'Contact not found'
