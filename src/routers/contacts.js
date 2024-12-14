@@ -1,10 +1,40 @@
-import { Router } from "express";
-import { getAllContacts, getContactById } from "../controllers/contacts.js";
+import express from 'express';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import {
+  getAllContacts,
+  getContactById,
+  createUser,
+  deleteUser,
+  changeContactFavorite,
+} from '../controllers/contacts.js';
+import { contactSchema, updateContactSchema } from '../validation/contacts.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import { isValidId } from '../middlewares/isValidId.js';
+import { auth } from '../middlewares/authenticate.js';
 
-const router = Router();
+const router = express.Router();
+const jsonParser = express.json();
 
-router.get("/", getAllContacts);
+router.get('/', auth, ctrlWrapper(getAllContacts));
+router.get('/:contactId', auth, isValidId, ctrlWrapper(getContactById));
 
-router.get("/:contactId", getContactById);
+router.post(
+  '/',
+  auth,
+  jsonParser,
+  validateBody(contactSchema),
+  ctrlWrapper(createUser),
+);
+
+router.delete('/:contactId', auth, isValidId, ctrlWrapper(deleteUser));
+
+router.patch(
+  '/:contactId',
+  auth,
+  isValidId,
+  jsonParser,
+  validateBody(updateContactSchema),
+  ctrlWrapper(changeContactFavorite),
+);
 
 export default router;
